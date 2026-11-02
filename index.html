@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Literature Club Workout Routine!</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for DDLC vibe -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Mali:ital,wght@0,500;0,700;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ddlc: {
+                            pink: '#ff94b8',
+                            lightpink: '#ffe3ec',
+                            darkpink: '#e85d88',
+                            hotpink: '#ff4081',
+                            cream: '#fff9fb',
+                            header: '#ff82a9',
+                            lace: '#ffffff',
+                            text: '#5a424e'
+                        }
+                    },
+                    fontFamily: {
+                        ddlc: ['"Mali"', 'handwriting', 'sans-serif'],
+                        cute: ['"Comfortaa"', 'cursive'],
+                        sans: ['"Nunito"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* DDLC Polka Dot Pattern Background */
+        body {
+            background-color: #ffdeeb;
+            background-image: 
+                radial-gradient(#ffb6d0 15%, transparent 16%),
+                radial-gradient(#ffb6d0 15%, transparent 16%);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+            color: #5a424e;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Cute Lace Border Pattern Effect */
+        .lace-top {
+            background: radial-gradient(circle, #ffffff 8px, transparent 9px);
+            background-size: 18px 18px;
+            background-position: 0 0;
+            height: 10px;
+            width: 100%;
+        }
+
+        /* Notebook Paper Effect */
+        .notebook-paper {
+            background-color: #fffafc;
+            box-shadow: 0 8px 20px -4px rgba(232, 93, 136, 0.2);
+        }
+
+        /* DDLC Dialogue Box Styling */
+        .ddlc-dialogue-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 235, 243, 0.96));
+            border: 3px solid #ff82a9;
+            box-shadow: 0 6px 0px #e85d88, 0 10px 15px rgba(0,0,0,0.1);
+            border-radius: 16px;
+        }
+
+        /* Mobile-first Touch Checkboxes */
+        .custom-heart-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 34px;
+            height: 34px;
+            border: 2px solid #ff94b8;
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            background-color: #fff;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .custom-heart-checkbox:checked {
+            background-color: #ff4081;
+            border-color: #e85d88;
+            transform: scale(1.05);
+        }
+        .custom-heart-checkbox:checked::after {
+            content: '♥';
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Floating Animation */
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+        }
+        .animate-float {
+            animation: gentleFloat 3s ease-in-out infinite;
+        }
+
+        /* Mobile Bottom Drawer Navigation */
+        .mobile-bottom-nav {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.92);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24 text-sm">
+
+    <!-- Mobile Header -->
+    <header class="bg-ddlc-header text-white shadow-sm sticky top-0 z-40">
+        <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl animate-bounce">🌸</span>
+                <div>
+                    <h1 class="font-ddlc text-lg font-bold text-white tracking-wide leading-tight">
+                        DDLC Workout Routine
+                    </h1>
+                    <p class="text-[10px] font-cute text-pink-100">Home Gym Delt Edition ✨</p>
+                </div>
+            </div>
+            <!-- Dynamic Rest Timer Button -->
+            <button onclick="startTimer(60)" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-full border border-white/40 flex items-center gap-1.5 active:scale-95 transition">
+                <i class="fa-solid fa-stopwatch text-pink-100"></i>
+                <span id="timer-display">60s Rest</span>
+            </button>
+        </div>
+        <div class="lace-top opacity-90"></div>
+    </header>
+
+    <!-- App Container -->
+    <main class="px-3 pt-3 max-w-lg mx-auto">
+
+        <!-- Dialogue Companion Banner -->
+        <div class="ddlc-dialogue-box p-3 mb-4 relative">
+            <div class="flex items-center gap-3">
+                <!-- Avatar -->
+                <div class="relative flex-shrink-0">
+                    <div id="character-avatar" class="w-16 h-16 rounded-full border-2 border-white shadow bg-pink-100 flex items-center justify-center overflow-hidden animate-float">
+                        <!-- SVG Avatar -->
+                    </div>
+                </div>
+
+                <!-- Speech -->
+                <div class="flex-grow">
+                    <div class="flex items-center justify-between">
+                        <h2 id="character-name" class="font-ddlc text-sm font-bold text-ddlc-darkpink">
+                            Sayori 🌻
+                        </h2>
+                        <span class="text-[10px] font-bold text-pink-500 bg-pink-100 px-2 py-0.5 rounded-full">
+                            Motivational Tip
+                        </span>
+                    </div>
+                    <p id="character-quote" class="font-ddlc text-xs text-ddlc-text leading-snug mt-1">
+                        "Yay! Let's work out together today! Don't forget to give it your best shot, okay?"
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Switch Club Members -->
+            <div class="flex justify-between items-center mt-2.5 pt-2 border-t border-pink-200/60 text-xs">
+                <span class="text-[10px] text-pink-400 font-bold">Switch Club Member:</span>
+                <div class="flex gap-1.5">
+                    <button onclick="switchCharacter('sayori')" class="w-7 h-7 rounded-full bg-orange-100 text-orange-600 font-bold flex items-center justify-center shadow-xs text-xs">🌻</button>
+                    <button onclick="switchCharacter('natsuki')" class="w-7 h-7 rounded-full bg-pink-100 text-pink-600 font-bold flex items-center justify-center shadow-xs text-xs">🧁</button>
+                    <button onclick="switchCharacter('yuri')" class="w-7 h-7 rounded-full bg-purple-100 text-purple-600 font-bold flex items-center justify-center shadow-xs text-xs">☕</button>
+                    <button onclick="switchCharacter('monika')" class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-600 font-bold flex items-center justify-center shadow-xs text-xs">💚</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day Selector Tabs (Swipeable Scroll) -->
+        <div class="flex gap-2 overflow-x-auto pb-2 mb-2 no-scrollbar" id="day-tabs">
+            <!-- Populated via JS -->
+        </div>
+
+        <!-- Active Workout Card -->
+        <div class="notebook-paper rounded-2xl p-4 border-2 border-pink-200 mb-4">
+            
+            <!-- Card Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-pink-200">
+                <div>
+                    <h2 id="day-title" class="font-ddlc text-lg font-bold text-ddlc-darkpink">
+                        Monday: Chest, Triceps & Delts
+                    </h2>
+                    <span id="day-badge" class="bg-pink-100 text-pink-600 text-[10px] font-bold px-2 py-0.5 rounded-md border border-pink-200 inline-block mt-0.5">
+                        Push Focus
+                    </span>
+                </div>
+                <button onclick="resetCurrentDay()" class="text-[11px] bg-white hover:bg-pink-50 text-ddlc-darkpink font-bold border border-pink-300 px-2.5 py-1 rounded-lg shadow-xs flex items-center gap-1 active:scale-95">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+            </div>
+
+            <!-- Home Gym Delt Note -->
+            <div id="day-focus-note" class="my-3 p-2.5 bg-pink-50/90 rounded-xl border border-pink-200 text-xs text-ddlc-text flex items-start gap-2">
+                <i class="fa-solid fa-star text-pink-400 mt-0.5"></i>
+                <div id="focus-note-text">
+                    Side and Rear Delt exercises included for full 3D home gym shoulders!
+                </div>
+            </div>
+
+            <!-- Exercises Container -->
+            <div class="space-y-3 mt-3" id="exercise-list">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Delt Sculpting Mobile Reference Guide -->
+        <div class="bg-white/90 backdrop-blur-sm rounded-xl p-4 border border-pink-200 shadow-sm mb-6">
+            <h3 class="font-ddlc text-sm font-bold text-ddlc-darkpink mb-2 flex items-center gap-1.5">
+                <i class="fa-solid fa-dumbbell text-pink-400"></i>
+                Home Gym Delt Strategy Guide
+            </h3>
+            <div class="space-y-2 text-xs">
+                <div class="p-2 bg-orange-50 rounded-lg border border-orange-200">
+                    <span class="font-bold text-orange-600">Front Delts:</span> Hit on Bench & Overhead Presses.
+                </div>
+                <div class="p-2 bg-pink-50 rounded-lg border border-pink-200">
+                    <span class="font-bold text-pink-600">Side Delts:</span> DB Lateral Raises (Mon, Thu, Fri).
+                </div>
+                <div class="p-2 bg-purple-50 rounded-lg border border-purple-200">
+                    <span class="font-bold text-purple-600">Rear Delts:</span> Bent-Over DB Rear Delt Flyes (Mon, Tue, Fri).
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Mobile Bottom Fixed Status Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 border-t border-pink-200 mobile-bottom-nav px-4 py-2.5 z-40">
+        <div class="max-w-lg mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-heart text-pink-500 text-base"></i>
+                <div>
+                    <div class="text-[10px] text-gray-500 font-bold uppercase">Daily Sets</div>
+                    <div id="day-progress-text" class="text-xs font-bold text-ddlc-text">0 / 0 completed</div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button onclick="startTimer(60)" class="bg-pink-100 text-pink-600 px-3 py-1.5 rounded-lg font-bold text-xs active:scale-95 transition">
+                    +60s Rest
+                </button>
+                <button onclick="startTimer(90)" class="bg-ddlc-darkpink text-white px-3 py-1.5 rounded-lg font-bold text-xs active:scale-95 transition">
+                    +90s Rest
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- JS Logic -->
+    <script>
+        const workoutData = [
+            {
+                id: 'mon',
+                dayName: 'Mon 🌸',
+                title: 'Monday: Chest, Triceps & Shoulders',
+                focus: 'Push Day',
+                focusNote: 'Includes Dumbbell Lateral Raises and Bent-Over Rear Delt Flyes for full shoulder shape!',
+                exercises: [
+                    { name: 'Flat Barbell Bench Press', sets: 3, reps: '8 - 10 reps', target: 'Chest / Triceps' },
+                    { name: 'Incline Barbell Bench Press', sets: 2, reps: '8 - 10 reps', target: 'Upper Chest / Front Delts' },
+                    { name: 'Overhead Barbell Press', sets: 2, reps: 'To Failure', target: 'Shoulders (Front & Side)' },
+                    { name: 'Dumbbell Lateral Raises', sets: 3, reps: '12 - 15 reps', target: 'Side Deltoids (Home Addition)' },
+                    { name: 'Bent-Over DB Rear Delt Flyes', sets: 2, reps: '12 - 15 reps', target: 'Rear Deltoids (Home Addition)' },
+                    { name: 'Cable Tricep Pushdowns', sets: 2, reps: 'To Failure', target: 'Triceps' },
+                    { name: 'Overhead Tricep Extensions', sets: 2, reps: 'To Failure', target: 'Triceps (Long Head)' },
+                    { name: 'Push-ups', sets: 1, reps: 'To Failure', target: 'Chest / Triceps Finisher' }
+                ]
+            },
+            {
+                id: 'tue',
+                dayName: 'Tue 🧁',
+                title: 'Tuesday: Back, Biceps & Rear Delts',
+                focus: 'Pull Day',
+                focusNote: 'Rear Delt Flyes pair perfectly with back pulling movements to protect shoulder posture.',
+                exercises: [
+                    { name: 'Barbell Conventional Deadlift', sets: 4, reps: '6 - 8 reps', target: 'Posterior Chain / Back' },
+                    { name: 'Lat Pulldown', sets: 2, reps: 'To Failure', target: 'Upper Lats' },
+                    { name: 'Bent-Over Barbell Row', sets: 2, reps: 'To Failure', target: 'Mid-Back / Lats' },
+                    { name: 'Incline DB Rear Delt Flyes', sets: 2, reps: '12 - 15 reps', target: 'Rear Deltoids (Home Addition)' },
+                    { name: 'Strict Barbell Bicep Curl', sets: 2, reps: 'To Failure', target: 'Biceps' },
+                    { name: 'Incline Dumbbell Bicep Curl', sets: 2, reps: 'To Failure', target: 'Biceps (Long Head)' }
+                ]
+            },
+            {
+                id: 'wed',
+                dayName: 'Wed 🦵',
+                title: 'Wednesday: Legs & Core',
+                focus: 'Leg Day',
+                focusNote: 'Strong legs support big presses! Take deep breaths and keep your core tight.',
+                exercises: [
+                    { name: 'Barbell Back Squat', sets: 4, reps: '8 - 10 reps', target: 'Quadriceps / Glutes' },
+                    { name: 'Romanian Deadlift (RDL)', sets: 3, reps: '8 - 10 reps', target: 'Hamstrings / Glutes' },
+                    { name: 'Leg Extension', sets: 2, reps: 'To Failure', target: 'Quads' },
+                    { name: 'Single-Leg Hip Thrust', sets: 2, reps: 'To Failure', target: 'Glutes' },
+                    { name: 'Walking Dumbbell Lunges', sets: 2, reps: '10 reps / leg', target: 'Quads / Glutes' },
+                    { name: 'Hanging Leg Raises', sets: 3, reps: '5 - 15 reps', target: 'Abs / Core' }
+                ]
+            },
+            {
+                id: 'thu',
+                dayName: 'Thu ☕',
+                title: 'Thursday: Upper Body & Side Delts',
+                focus: 'Chest & Back Hybrid',
+                focusNote: 'High intensity upper session! DB Lateral Raises included for constant shoulder width.',
+                exercises: [
+                    { name: 'Incline Barbell Bench Press', sets: 3, reps: '8 - 10 reps', target: 'Upper Chest' },
+                    { name: 'Flat Barbell Bench Press', sets: 2, reps: '8 - 10 reps', target: 'Chest' },
+                    { name: 'Lat Pulldown', sets: 2, reps: 'To Failure', target: 'Lats' },
+                    { name: 'Bent-Over Barbell Row', sets: 2, reps: 'To Failure', target: 'Back Thickness' },
+                    { name: 'Dumbbell Lateral Raises', sets: 3, reps: '12 - 15 reps', target: 'Side Deltoids (Home Addition)' }
+                ]
+            },
+            {
+                id: 'fri',
+                dayName: 'Fri 💚',
+                title: 'Friday: Arms & Shoulder Hypertrophy',
+                focus: 'Arm & Delt Pump Day',
+                focusNote: 'Finish the week with maximum arm & shoulder isolation! Light weights, perfect form.',
+                exercises: [
+                    { name: 'Cable Tricep Pushdowns', sets: 2, reps: 'To Failure', target: 'Triceps' },
+                    { name: 'Overhead Tricep Extensions', sets: 2, reps: 'To Failure', target: 'Triceps' },
+                    { name: 'Strict Barbell Bicep Curl', sets: 2, reps: 'To Failure', target: 'Biceps' },
+                    { name: 'Incline Dumbbell Bicep Curl', sets: 2, reps: 'To Failure', target: 'Biceps' },
+                    { name: 'Dumbbell Hammer Curls', sets: 2, reps: 'To Failure', target: 'Brachialis / Forearms' },
+                    { name: 'Dumbbell Lateral Raises', sets: 3, reps: '10 - 12 reps', target: 'Side Deltoids' },
+                    { name: 'Standing DB Rear Delt Flyes', sets: 2, reps: '12 - 15 reps', target: 'Rear Deltoids (Home Addition)' }
+                ]
+            }
+        ];
+
+        const characters = {
+            sayori: {
+                name: "Sayori 🌻",
+                quotes: [
+                    "Yay! Let's work out together today! Don't forget to drink water, okay?",
+                    "You're working so super hard! Big mental high-fives for every single set!",
+                    "Remember to stretch! We don't want you getting all stiff~"
+                ],
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <circle cx="50" cy="50" r="45" fill="#ffe2d1"/>
+                    <path d="M20 50 Q15 20 50 15 Q85 20 80 50 Q85 30 50 20 Q15 30 20 50 Z" fill="#fa9d75"/>
+                    <path d="M65 20 C 75 10, 85 25, 70 28 Z" fill="#ff4d6d"/>
+                    <circle cx="38" cy="48" r="5" fill="#4361ee"/><circle cx="62" cy="48" r="5" fill="#4361ee"/>
+                    <path d="M42 58 Q50 66 58 58" fill="none" stroke="#d90429" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>`
+            },
+            natsuki: {
+                name: "Natsuki 🧁",
+                quotes: [
+                    "Don't slop your form! Muscle doesn't just bake itself, dummy!",
+                    "It's... not like I'm watching your sets or anything... just do it right!",
+                    "Push all the way to failure! Show me what you've got!"
+                ],
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <circle cx="50" cy="50" r="45" fill="#ffe2d1"/>
+                    <path d="M20 40 Q20 15 50 15 Q80 15 80 40 Q65 22 50 25 Q35 22 20 40 Z" fill="#ff85a2"/>
+                    <circle cx="38" cy="48" r="5" fill="#b5179e"/><circle cx="62" cy="48" r="5" fill="#b5179e"/>
+                    <path d="M44 60 Q50 56 56 60" fill="none" stroke="#800f2f" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>`
+            },
+            yuri: {
+                name: "Yuri ☕",
+                quotes: [
+                    "Maintain steady control. Mind-muscle connection is paramount.",
+                    "Controlled time-under-tension is elegant and effective.",
+                    "Your consistency is truly inspiring. Take deep breaths."
+                ],
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <circle cx="50" cy="50" r="45" fill="#ffe2d1"/>
+                    <path d="M20 40 Q20 12 50 12 Q80 12 80 40 Q65 20 50 22 Q35 20 20 40 Z" fill="#8338ec"/>
+                    <circle cx="38" cy="48" r="5" fill="#7209b7"/><circle cx="62" cy="48" r="5" fill="#7209b7"/>
+                    <path d="M45 59 Q50 62 55 59" fill="none" stroke="#4a154b" stroke-width="2" stroke-linecap="round"/>
+                </svg>`
+            },
+            monika: {
+                name: "Monika 💚",
+                quotes: [
+                    "Just Monika watching you destroy your workout goals!",
+                    "Progressive overload is our secret code to great shoulders!",
+                    "You and me, we make the ultimate workout team!"
+                ],
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <circle cx="50" cy="50" r="45" fill="#ffe2d1"/>
+                    <path d="M20 40 Q20 15 50 15 Q80 15 80 40 Q65 22 50 24 Q35 22 20 40 Z" fill="#b08968"/>
+                    <circle cx="38" cy="48" r="5" fill="#2a9d8f"/><circle cx="62" cy="48" r="5" fill="#2a9d8f"/>
+                    <path d="M42 58 Q50 65 58 58" fill="none" stroke="#264653" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>`
+            }
+        };
+
+        let currentDayIndex = 0;
+        let currentCharacterKey = 'sayori';
+        let completedSets = JSON.parse(localStorage.getItem('ddlc_workout_sets') || '{}');
+        let timerInterval = null;
+
+        window.onload = function() {
+            renderDayTabs();
+            renderCurrentDay();
+            switchCharacter('sayori');
+        };
+
+        function renderDayTabs() {
+            const tabsContainer = document.getElementById('day-tabs');
+            tabsContainer.innerHTML = '';
+            workoutData.forEach((day, idx) => {
+                const isActive = idx === currentDayIndex;
+                const btn = document.createElement('button');
+                btn.className = `flex-shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold transition font-ddlc ${
+                    isActive 
+                        ? 'bg-ddlc-darkpink text-white border-2 border-ddlc-hotpink shadow' 
+                        : 'bg-white text-ddlc-text border border-pink-200'
+                }`;
+                btn.innerText = day.dayName;
+                btn.onclick = () => {
+                    currentDayIndex = idx;
+                    renderDayTabs();
+                    renderCurrentDay();
+                };
+                tabsContainer.appendChild(btn);
+            });
+        }
+
+        function renderCurrentDay() {
+            const day = workoutData[currentDayIndex];
+            document.getElementById('day-title').innerText = day.title;
+            document.getElementById('day-badge').innerText = day.focus;
+            document.getElementById('focus-note-text').innerHTML = day.focusNote;
+
+            const listContainer = document.getElementById('exercise-list');
+            listContainer.innerHTML = '';
+
+            day.exercises.forEach((ex, exIdx) => {
+                const card = document.createElement('div');
+                card.className = "bg-white/90 rounded-xl p-3 border border-pink-200 shadow-xs";
+
+                let checkboxesHtml = '';
+                for (let s = 0; s < ex.sets; s++) {
+                    const key = `${day.id}-${exIdx}-${s}`;
+                    const isChecked = !!completedSets[key];
+                    checkboxesHtml += `
+                        <label class="flex flex-col items-center gap-1 cursor-pointer">
+                            <input type="checkbox" 
+                                   class="custom-heart-checkbox" 
+                                   ${isChecked ? 'checked' : ''} 
+                                   onchange="toggleSet('${day.id}', ${exIdx}, ${s}, this.checked)">
+                            <span class="text-[10px] font-bold text-pink-600">Set ${s + 1}</span>
+                        </label>
+                    `;
+                }
+
+                const isDelt = ex.name.toLowerCase().includes('delt') || ex.name.toLowerCase().includes('lateral raises');
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2 mb-1.5">
+                        <div>
+                            <h3 class="font-bold text-xs text-ddlc-text font-ddlc leading-snug">
+                                ${ex.name} ${isDelt ? '✨' : ''}
+                            </h3>
+                            <span class="text-[10px] text-gray-400 font-semibold">${ex.target}</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-pink-500 bg-pink-100 px-2 py-0.5 rounded-md flex-shrink-0">
+                            ${ex.sets} × ${ex.reps}
+                        </span>
+                    </div>
+
+                    <!-- Touch-Friendly Large Checkboxes -->
+                    <div class="flex items-center gap-3 pt-2 border-t border-pink-100/80 justify-start">
+                        ${checkboxesHtml}
+                    </div>
+                `;
+
+                listContainer.appendChild(card);
+            });
+
+            updateDayProgress();
+        }
+
+        function toggleSet(dayId, exIdx, setIdx, isChecked) {
+            const key = `${dayId}-${exIdx}-${setIdx}`;
+            if (isChecked) {
+                completedSets[key] = true;
+                startTimer(60);
+            } else {
+                delete completedSets[key];
+            }
+            localStorage.setItem('ddlc_workout_sets', JSON.stringify(completedSets));
+            updateDayProgress();
+        }
+
+        function updateDayProgress() {
+            const day = workoutData[currentDayIndex];
+            let totalSets = 0;
+            let doneSets = 0;
+
+            day.exercises.forEach((ex, exIdx) => {
+                totalSets += ex.sets;
+                for (let s = 0; s < ex.sets; s++) {
+                    if (completedSets[`${day.id}-${exIdx}-${s}`]) {
+                        doneSets++;
+                    }
+                }
+            });
+
+            document.getElementById('day-progress-text').innerText = `${doneSets} / ${totalSets} completed`;
+        }
+
+        function resetCurrentDay() {
+            const day = workoutData[currentDayIndex];
+            day.exercises.forEach((ex, exIdx) => {
+                for (let s = 0; s < ex.sets; s++) {
+                    delete completedSets[`${day.id}-${exIdx}-${s}`];
+                }
+            });
+            localStorage.setItem('ddlc_workout_sets', JSON.stringify(completedSets));
+            renderCurrentDay();
+        }
+
+        function switchCharacter(charKey) {
+            currentCharacterKey = charKey;
+            const char = characters[charKey];
+            document.getElementById('character-avatar').innerHTML = char.svg;
+            document.getElementById('character-name').innerText = char.name;
+            const randomQuote = char.quotes[Math.floor(Math.random() * char.quotes.length)];
+            document.getElementById('character-quote').innerText = `"${randomQuote}"`;
+        }
+
+        function startTimer(seconds) {
+            clearInterval(timerInterval);
+            let timeLeft = seconds;
+            const timerDisplay = document.getElementById('timer-display');
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.innerText = "Rest Over! ♥";
+                } else {
+                    timerDisplay.innerText = `${timeLeft}s Rest`;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
