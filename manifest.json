@@ -1,0 +1,9 @@
+{
+  "short_name": "DDLC Workout",
+  "name": "DDLC Workout App",
+  "start_url": "./index.html",
+  "background_color": "#ffb6c1",
+  "theme_color": "#ffb6c1",
+  "display": "standalone",
+  "orientation": "portrait"
+}
